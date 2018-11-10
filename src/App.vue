@@ -14,42 +14,40 @@
     </v-toolbar>
     <v-content>
       <v-container fluid>
-        <v-layout row wrap>
+        <v-layout wrap row >
           <v-flex class="stu-flex" v-for="stu in students" :key="stu.name" lg1>
-            <v-card max-width="155">
-                <v-badge right color="info">
-                  <span slot="badge">{{stu.reward.length}}</span>
-                  <v-card-title primary-title>
-                    <h3>{{stu.name}}</h3>
-                  </v-card-title>
-                </v-badge>
-              <v-divider></v-divider>
-              <v-card-text>
-                <v-list>
-                  <v-list-tile v-for="(star, index) in stu.reward" :key="index" @click="removeReward({name: stu.name, index: index})">
-                    <v-list-tile-content class="star-flex">
-                      <img :src="'/public/icon/'+star+'@32.png'" alt="">
-                    </v-list-tile-content>
-                  </v-list-tile>
-                </v-list>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-menu>
-                  <v-btn fab small slot="activator">
-                    <v-icon small>add</v-icon>
-                  </v-btn>
-                  <v-list>
-                    <v-list-tile v-for="(icon, index) in iconFonts" :key="index" @click="addIcon(stu.name, icon)">
-                      <v-list-tile-content>
-                        <img class="my-icon" :src="'/public/icon/'+icon+'@32.png'" alt="icon">
-                      </v-list-tile-content>
-                    </v-list-tile>
-                  </v-list>
-                </v-menu>
-              </v-card-actions>
-            </v-card>
+            <v-badge color="info" overlap>
+              <span slot="badge">{{stu.reward.length}}</span>
+              <v-card width="130">
+                <v-card-title primary-title>
+                  <h4>{{stu.name}}</h4>
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                  <v-layout wrap>
+                    <v-flex v-for="(icon, index) in stu.reward" :key="index" @click="removeReward({name: stu.name, index: index})" lg4>
+                      <img :src="require('@/assets/icon/'+icon+'@32.png')" alt="">
+                    </v-flex>
+                  </v-layout>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-menu>
+                    <v-btn fab small slot="activator">
+                      <v-icon small>add</v-icon>
+                    </v-btn>
+                    <v-list>
+                      <v-list-tile v-for="(icon, index) in iconFonts" :key="index" @click="addIcon(stu.name, icon)">
+                        <v-list-tile-content>
+                          <img class="my-icon" :src="require('@/assets/icon/'+icon+'@32.png')" alt="icon">
+                        </v-list-tile-content>
+                      </v-list-tile>
+                    </v-list>
+                  </v-menu>
+                </v-card-actions>
+              </v-card>
+            </v-badge>
           </v-flex>
         </v-layout>
       </v-container>
@@ -87,15 +85,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="exitDialog" persistent max-width="350">
+    <v-dialog v-model="exitDialog" persistent max-width="300">
       <v-card>
         <v-card-text>
           <h3>确定要删除所有学生？</h3>
         </v-card-text>
-        <v-divider></v-divider>
+        <!-- <v-divider></v-divider> -->
         <v-card-actions>
+          <v-btn @click="exitDialog=false" small flat>取消</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="error" @click="removeAllStudent();exitDialog=false" small>确定</v-btn>
+          <v-btn color="error" @click="removeAllStudent();exitDialog=false" small flat>确定</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -141,7 +140,6 @@ import { mapActions } from 'vuex'
 
 <style scoped>
 .stu-flex{
-  margin-left: 30px;
   margin-bottom: 30px;
 }
 .star-flex{
