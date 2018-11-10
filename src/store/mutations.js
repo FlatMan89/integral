@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import storage from '../storage'
 
 // 需要维护的状态
 
@@ -6,51 +7,54 @@ const mutations = {
     // 新增学生
     NEW_STUDENT(state, name) {
         let temp = true
-        for(stu in state.students){
-            if (stu.name == name){
-                temp = false
+        for (let i=0; i<state.students.length; i++){
+            if (state.students[i].name == name){
+                return
             }
         }
-        if(temp){
-            state.students.push({name: name, reward:[]})
-        }
-        // Vue.set(state.students, name, {name: name, reward: []})
+        state.students.push({name: name, reward:[]})
+        storage.save(state.students)
     },
     // 删除学生
     REMOVE_STUDENT(state, name) {
-        // Vue.set(state.students, name, {})
-        // Vue.set(state, 'students', state.students)
-        for(stu in state.students){
-            if (stu.name == name){
-                state.students.remove(stu)
-                break
+        if (state.students){
+            for(let i=0;i<state.students.length; i++){
+                if (state.students[i].name == name){
+                    state.students.splice(i, 1)
+                    storage.save(state.students)
+                    break
+                }
             }
         }
+        
     },
     // 清空所有学生
     REMOVE_ALL_STUDENT(state) {
-        Vue.set(state, 'students', {})
+        state.students.splice(0, state.students.length)
+        storage.save(state.students)
     },
 
     // 给学生添加奖励
-    ADD_REWARD(state, name, reward) {
-        state.students[name].reward.push(reward)
+    ADD_REWARD(state, {name, icon}) {
+        for(let i=0; i<state.students.length; i++){
+            if (state.students[i].name == name){
+                state.students[i].reward.push(icon)
+                storage.save(state.students)
+                break;
+            }
+        }
+        
     },
     // 删除学生的奖励
-    REMOVE_REWARD(state, name, reward) {
-        let arr = state.students[name].reward
-        let index = arr[reward]
-
-        if (state.student['name']){
-            state.student['name'].reward = arr.splice(index, 1)
+    REMOVE_REWARD(state, {name, index}) {
+        for(let i=0; i<state.students.length; i++){
+            if(state.students[i].name == name){
+                state.students[i].reward.splice(index, 1)
+                storage.save(state.students)
+                break
+            }
         }
-    },
-    // 清空所有学生的奖励
-    REMOVE_ALL_REWARD(state) {
-        for(stu in state.students){
-            stu.reward = []
-        }
-    },
+    }
     
 }
 

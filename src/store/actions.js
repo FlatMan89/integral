@@ -10,11 +10,11 @@ const actions =  {
     removeAllStudent ({ commit }) {
         commit(types.REMOVE_ALL_STUDENT)
     },
-    addReward ({ commit }) {
-        commit(types.ADD_REWARD, name, reward)
+    addReward ({ commit }, {name, icon}) {
+        commit(types.ADD_REWARD, {name: name, icon: icon})
     },
-    removeReward ({ commit }){
-        commit(types.REMOVE_REWARD, name, reward)
+    removeReward ({ commit }, {name, index}){
+        commit(types.REMOVE_REWARD, {name, index})
     },
     removeAllReward ({ commit }) {
         commit(types.REMOVE_ALL_REWARD)

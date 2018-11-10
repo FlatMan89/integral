@@ -3,11 +3,12 @@ import Vuex from 'vuex'
 
 import mutations from './mutations'
 import actions from './actions'
+import storage from '../storage'
 
 Vue.use(Vuex)
 
 const state = {
-    students: []
+    students: storage.fetch() || []
 }
 
 export default new Vuex.Store({
